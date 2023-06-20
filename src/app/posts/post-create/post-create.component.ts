@@ -13,7 +13,6 @@ export class PostCreateComponent {
   enteredTitle = ""
   enteredContent = "";
 
-  // @Output() postCreated = new EventEmitter<Post>();
 
   constructor(private postService:PostService){
 
@@ -24,11 +23,12 @@ export class PostCreateComponent {
       return;
     }
     const post: Post = {
+      id:null,
       title:form.value.enteredTitle,
       content: form.value.enteredContent
     }
-    // this.postCreated.emit(post);
     this.postService.addPosts(post);
+    form.resetForm();
   }
 
 }

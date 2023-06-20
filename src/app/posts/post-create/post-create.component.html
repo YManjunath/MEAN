@@ -1,22 +1,23 @@
 <mat-card-actions>
   <form (submit)="addPost(postForm)" #postForm="ngForm">
     <mat-form-field>
+      <mat-label>Post Title</mat-label>
       <input
         matInput
         rows="6"
-        placeholder="Post Title"
         ngModel
         name="enteredTitle"
         required
         #enteredTitle="ngModel"
       />
       <mat-error *ngIf="enteredTitle.invalid">Please enter title.</mat-error>
+      
     </mat-form-field>
     <mat-form-field>
+      <mat-label>Post Content</mat-label>
       <textarea
         matInput
         rows="6"
-        placeholder="Post Content..."
         ngModel
         name="enteredContent"
         required

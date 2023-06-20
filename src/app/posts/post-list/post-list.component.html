@@ -7,9 +7,23 @@
       <p>
         {{ post.content }}
       </p>
+      <mat-action-row>
+        <button mat-stroked-button color="primary">
+          EDIT<mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="edit"
+          ></mat-icon>
+        </button>
+        <button mat-stroked-button color="warn">
+          DELETE<mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            fontIcon="delete"
+          ></mat-icon>
+        </button>
+      </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>
   <p *ngIf="posts.length <= 0" class="mat-body-1">No posts yet!!</p>
 </main>
-
-

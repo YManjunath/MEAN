@@ -2,3 +2,7 @@ main {
     margin-top: 1rem;
     text-align: center;
 }
+
+p {
+    text-align: justify;
+}
