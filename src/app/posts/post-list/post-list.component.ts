@@ -9,7 +9,6 @@ import { PostService } from '../post.service';
   styleUrls: ['./post-list.component.css']
 })
 export class PostListComponent implements OnInit, OnDestroy{
-  // @Input() posts:Post[] = [];
   posts:Post[] = [];
   private postsSub:Subscription | undefined ;
 
@@ -21,10 +20,19 @@ export class PostListComponent implements OnInit, OnDestroy{
   }
   
   ngOnInit(){
+    this.getPosts();
+  }
+
+  getPosts(){
     this.postService.getPosts()
     this.postsSub = this.postService.getPostUpdateListener().subscribe((post:Post[]) => {
-      this.posts = post
+      this.posts = post;
+      console.log(this.posts)
     })
+  }
+
+  deletePost(id:any){
+    this.postService.deletePost(id);
   }
 
   ngOnDestroy(): void {

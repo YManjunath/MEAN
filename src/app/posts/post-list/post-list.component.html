@@ -8,18 +8,19 @@
         {{ post.content }}
       </p>
       <mat-action-row>
-        <button mat-stroked-button color="primary">
+        <button mat-stroked-button color="primary" routerLink="edit/{{post.id}}">
           EDIT<mat-icon
             aria-hidden="false"
             aria-label="Example home icon"
             fontIcon="edit"
           ></mat-icon>
         </button>
-        <button mat-stroked-button color="warn">
+        <button mat-stroked-button (click)="deletePost(post.id)" color="warn">
           DELETE<mat-icon
             aria-hidden="false"
             aria-label="Example home icon"
             fontIcon="delete"
+            
           ></mat-icon>
         </button>
       </mat-action-row>

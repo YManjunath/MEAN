@@ -1,31 +1,14 @@
+const { RouterOutlet } = require('@angular/router');
 const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
-const mongoose = require('mongoose');
 
-const PostModel = require('./Model/Post');
-const { async } = require('rxjs');
+const app = express;
 
-mongoose.connect("mongodb+srv://admin-manjunath:manju123@cluster0.56noa.mongodb.net/Posts?retryWrites=true&w=majority", { useNewUrlParser: true }).then(() => {
-    console.log('Connected to Database');
-}, (err) => {
-    console.log('There is problem connecting to database');
-})
+const router = express.Router();
+
+const postModel = require('../Model/Post');
 
 
-
-app.use(bodyParser.json());
-
-app.use((req, res, next) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-with, Content-Type, Accept");
-    res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-    next();
-});
-
-// Add posts
-
-app.post('/api/posts', (req, res, next) => {
+router.post('', (req, res, next) => {
     const post = new PostModel({
         title: req.body.title,
         content: req.body.content
@@ -44,7 +27,7 @@ app.post('/api/posts', (req, res, next) => {
 
 // update post
 
-app.put('/api/posts/:id', (req, res, next) => {
+router.put('/:id', (req, res, next) => {
     const post = new PostModel({
         _id: req.body.id,
         title: req.body.title,
@@ -61,7 +44,7 @@ app.put('/api/posts/:id', (req, res, next) => {
 
 // get posts
 
-app.get('/api/posts', async (req, res, next) => {
+router.get('', async (req, res, next) => {
     const post = await PostModel.find();
     res.status(200).json({
         message: 'fetched posts successfully',
@@ -72,7 +55,7 @@ app.get('/api/posts', async (req, res, next) => {
 
 // get post by id
 
-app.get('/api/posts/:id', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
     PostModel.findById(req.params.id).then((err, post) => {
         if(post){
             res.status(200).json(post)
@@ -84,7 +67,7 @@ app.get('/api/posts/:id', (req, res, next) => {
 
 // delete post
 
-app.delete('/api/posts/:id', (req, res, next) => {
+router.delete('/:id', (req, res, next) => {
     PostModel.findByIdAndRemove({
         _id: req.params.id
     }).then((err, post) => {
@@ -97,4 +80,4 @@ app.delete('/api/posts/:id', (req, res, next) => {
     })
 })
 
-module.exports = app;
+module.exports = router;
