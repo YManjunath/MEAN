@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Post } from '../post.model';
 import { PostService } from '../post.service';
@@ -15,6 +15,8 @@ export class PostCreateComponent implements OnInit {
   public mode = 'create';
   private postId :string;
   post:any;
+  isLoading:boolean = false;
+  form:FormGroup;
 
   constructor(
     private postService: PostService,
@@ -22,6 +24,10 @@ export class PostCreateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.form = new FormGroup({
+      title: new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
+      content: new FormControl('', {validators: [Validators.required]}),
+    })
     this.route.paramMap.subscribe((paramMap:ParamMap)=>{
       const _id = paramMap.get('postId')
       if(_id){
@@ -31,26 +37,28 @@ export class PostCreateComponent implements OnInit {
         /*this.postService.getPost(this.postId).subscribe(res => {
           this.post = res;
         });*/
+        
+        this.post && this.post.length >=0 ? this.form.setValue({title: this.post.title, content: this.post.content}) : '';
       } else {
         this.mode = 'create';
       }
     });
   }
 
-  onSavePost(form: NgForm) {
-    if (form.invalid) {
+  onSavePost() {
+    if (this.form.invalid) {
       return;
     }
     const post: Post = {
       id: '',
-      title: form.value.enteredTitle,
-      content: form.value.enteredContent,
+      title: this.form.value.title,
+      content: this.form.value.content,
     };
     if(this.mode === 'create'){
       this.postService.addPosts(post);
     } else {
       this.postService.updatePost(this.postId, post)
     }
-    form.resetForm();
+    this.form.reset();
   }
 }
