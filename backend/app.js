@@ -73,9 +73,10 @@ app.get('/api/posts', async (req, res, next) => {
 // get post by id
 
 app.get('/api/posts/:id', (req, res, next) => {
-    PostModel.findById(req.params.id).then((err, post) => {
+    const id = req.params.id
+    PostModel.findById(id).then((err, post) => {
         if(post){
-            res.status(200).json(post)
+            res.status(200).json({post})
         } else {
             res.status(400).json('Post not found')
         }

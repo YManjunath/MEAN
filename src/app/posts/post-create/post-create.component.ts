@@ -14,6 +14,7 @@ export class PostCreateComponent implements OnInit {
   enteredContent = '';
   public mode = 'create';
   private postId :string;
+  imagePreview:string;
   post:any;
   isLoading:boolean = false;
   form:FormGroup;
@@ -27,6 +28,7 @@ export class PostCreateComponent implements OnInit {
     this.form = new FormGroup({
       title: new FormControl('', {validators: [Validators.required, Validators.minLength(3)]}),
       content: new FormControl('', {validators: [Validators.required]}),
+      image: new FormControl('', {validators: [Validators.required]}),
     })
     this.route.paramMap.subscribe((paramMap:ParamMap)=>{
       const _id = paramMap.get('postId')
@@ -60,5 +62,21 @@ export class PostCreateComponent implements OnInit {
       this.postService.updatePost(this.postId, post)
     }
     this.form.reset();
+  }
+
+  onImagePicked(event: Event){
+    const file =  (event.target as HTMLInputElement).files
+    if(file && file){
+      this.form.patchValue({image:file[0]});
+      this.form.get('image')?.updateValueAndValidity();
+    };
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.imagePreview = <string>reader.result;
+    };
+    if(file && file.length){
+      reader.readAsDataURL(file[0]);
+    }
+    
   }
 }
